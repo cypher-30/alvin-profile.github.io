@@ -40,8 +40,15 @@
             background-color: var(--bg-deep-space-blue);
             color: var(--text-cold-white);
             margin: 0;
-            overflow: hidden; /* JS handles scrolling */
+            overflow-x: hidden; /* Prevent horizontal scroll on all devices */
             transition: font-family 0.4s ease, background-color 0.2s, color 0.2s;
+        }
+
+        /* Apply overflow:hidden only on larger screens for Lenis to work */
+        @media (min-width: 1024px) {
+            body {
+                overflow: hidden;
+            }
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -407,7 +414,9 @@
         <div id="main-toggle-button" class="ui-button"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></div>
     </div>
     
-    <audio id="ambient-audio" loop><source src="./promisedconsort.mp3" type="audio/mpeg"></audio>
+    <audio id="ambient-audio" loop>
+        <source src="./promisedconsort.mp3" type="audio/mpeg">
+    </audio>
     
     <div id="project-viewer-overlay"><div class="close-button">&times;</div><div id="project-viewer-ui"></div></div>
 
@@ -472,7 +481,7 @@
                 const key = el.dataset.langKey;
                 if (langData[lang][key]) el.textContent = langData[lang][key];
             });
-            renderProjects(); // Re-render projects with the new language
+            renderProjects();
         }
 
         function renderProjects() {
@@ -514,10 +523,8 @@
             document.getElementById('entry-overlay').classList.add('hidden');
             audio.play().catch(error => console.error("Audio playback failed:", error));
             
-            // Initialize sounds on first user interaction
             if (!soundsReady && typeof Tone !== 'undefined') {
                 await Tone.start();
-                
                 sandboxRunSynth = new Tone.Synth({ oscillator: { type: 'triangle' }, envelope: { attack: 0.01, decay: 0.5, sustain: 0.2, release: 0.5 }, volume: -10 }).toDestination();
                 textFallSynth = new Tone.PolySynth(Tone.Synth, { oscillator: { type: 'sine' }, envelope: { attack: 0.01, decay: 0.5, sustain: 0, release: 0.8 }, volume: -15 }).toDestination();
                 quoteResetSynth = new Tone.Synth({ oscillator: { type: 'triangle' }, envelope: { attack: 0.005, decay: 0.2, sustain: 0, release: 0.2 }, volume: -15 }).toDestination();
@@ -527,7 +534,6 @@
                 discoLoop = new Tone.Sequence((time, note) => {
                     discoSynth.triggerAttackRelease(note, 0.1, time);
                 }, discoPattern, "8n");
-
                 soundsReady = true;
             }
         }, { once: true });
