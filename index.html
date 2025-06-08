@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alvin Murithi | The Cygnus Archives</title>
     <style>
         /* Google Fonts Import */
-        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;700&family=Uncut+Sans:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;700&family=Uncut+Sans:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700;900&display=swap');
 
         /* CSS Variables and Base Styles */
         :root {
@@ -18,10 +18,17 @@
             --panel-border: rgba(100, 244, 172, 0.2);
             --font-main: 'Sora', sans-serif;
             --font-heading: 'Uncut Sans', sans-serif;
+            --header-bg: transparent;
         }
         
-        body.artistic-font {
-            --font-main: 'Playfair Display', serif;
+        body.gold-theme {
+            --bg-deep-space-blue: #121212;
+            --text-cold-white: #E0E0E0;
+            --heading-synth-purple: #FBBF24;
+            --accent-alien-green: #FBBF24;
+            --panel-bg: rgba(26, 26, 26, 0.7);
+            --panel-border: rgba(251, 191, 36, 0.2);
+            --font-main: 'Inter', sans-serif;
             --font-heading: 'Playfair Display', serif;
         }
 
@@ -41,10 +48,10 @@
             color: var(--text-cold-white);
             margin: 0;
             overflow-x: hidden; /* Prevent horizontal scroll on all devices */
-            transition: font-family 0.4s ease, background-color 0.2s, color 0.2s;
+            transition: font-family 0.4s ease, background-color 0.4s, color 0.4s;
+            font-size: clamp(1rem, 1.5vw, 1.1rem); /* Base responsive font size */
         }
 
-        /* Apply overflow:hidden only on larger screens for Lenis to work */
         @media (min-width: 1024px) {
             body {
                 overflow: hidden;
@@ -53,18 +60,139 @@
 
         h1, h2, h3, h4, h5, h6 {
              font-family: var(--font-heading);
+             line-height: 1.2;
+        }
+        p {
+             line-height: 1.6;
         }
 
-        /* Fixed UI Elements */
-        #initials {
+        /* === NEW & IMPROVED HEADER NAVIGATION === */
+        #header {
             position: fixed;
-            top: 30px;
-            left: 30px;
-            z-index: 100;
-            font-family: 'Uncut Sans', sans-serif;
-            font-size: 1.8rem;
+            top: 20px; /* Push down from the top */
+            left: 50%;
+            transform: translateX(-50%); /* Center the header */
+            width: 95%;
+            max-width: 1280px;
+            z-index: 50;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother transition */
+            border-radius: 12px; /* Rounded corners */
+            background-color: rgba(27, 33, 54, 0.3); /* Default semi-transparent background */
+            backdrop-filter: blur(10px) saturate(180%); /* Glassmorphism effect */
+            border: 1px solid rgba(100, 244, 172, 0.15); /* Subtle border */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Softer shadow */
+        }
+        
+        #header.scrolled {
+            top: 10px; /* Move up slightly on scroll */
+            background-color: rgba(27, 33, 54, 0.6); /* Slightly more opaque */
+            border: 1px solid rgba(100, 244, 172, 0.25);
+        }
+
+        body.gold-theme #header {
+            background-color: rgba(26, 26, 26, 0.3);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+        }
+
+        body.gold-theme #header.scrolled {
+            background-color: rgba(18, 18, 18, 0.6);
+            border: 1px solid rgba(251, 191, 36, 0.25);
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 8px 0;
+            transition: color 0.3s ease;
+            color: var(--text-cold-white);
+            opacity: 0.8;
+            text-decoration: none;
+            font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+        }
+
+        .nav-link:hover {
+            color: var(--accent-alien-green);
+            opacity: 1;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--accent-alien-green);
+            transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Initials Dropdown Menu */
+        #initials-container {
+            position: relative;
+        }
+        #initials {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 3vw, 1.8rem);
             font-weight: 700;
             color: var(--text-cold-white);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        #initials:hover {
+            transform: scale(1.1);
+        }
+        #initials-dropdown {
+            position: absolute;
+            top: 110%;
+            left: 0;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 0.5rem;
+            list-style: none;
+            margin: 0;
+            min-width: 220px;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        #initials-dropdown.open {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+        .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .dropdown-item svg {
+            width: 20px;
+            height: 20px;
+            color: var(--accent-alien-green);
         }
 
         #three-canvas {
@@ -106,7 +234,7 @@
         }
         .entry-text {
             color: var(--accent-alien-green);
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2.5vw, 1.2rem); /* Responsive Entry Text */
             border: 1px solid var(--accent-alien-green);
             padding: 15px 30px;
             border-radius: 8px;
@@ -127,64 +255,81 @@
 
         .section-header {
             max-width: 800px;
-            margin-bottom: 80px;
+            margin-bottom: clamp(40px, 8vw, 80px); /* Responsive margin */
             text-align: center;
         }
 
         .section-header h2 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2.5rem, 6vw, 4rem);
             color: var(--heading-synth-purple);
             margin: 0;
         }
         .section-header p {
              max-width: 600px;
              margin: 20px auto 0;
+             font-size: clamp(0.9rem, 2vw, 1.1rem);
         }
         
         /* Hero Section */
         #hero { justify-content: center; }
-        #hero h1 { font-size: clamp(3rem, 7vw, 6rem); margin: 0 0 10px 0; line-height: 1.1; color: var(--text-cold-white); font-weight: 700; }
+        #hero h1 { font-size: clamp(3rem, 10vw, 7rem); margin: 0 0 10px 0; line-height: 1.1; color: var(--text-cold-white); font-weight: 700; }
         #hero .hero-accent-heading { color: var(--heading-synth-purple); }
-        #hero .hero-subheading { font-size: clamp(1rem, 2vw, 1.2rem); color: var(--text-cold-white); max-width: 700px; margin: 20px auto 0; }
+        #hero .hero-subheading { font-size: clamp(1rem, 3vw, 1.25rem); color: var(--text-cold-white); max-width: 700px; margin: 20px auto 0; }
         .scroll-indicator { position: absolute; bottom: 40px; font-size: 0.8rem; color: var(--accent-alien-green); opacity: 0.7; }
 
-        /* About Section (Timeline) */
-        #about .about-content { display: flex; flex-direction: column; align-items: center; gap: 80px; max-width: 1000px; width: 100%; }
-        .timeline { text-align: left; position: relative; width: 100%; max-width: 500px; }
-        .timeline::before { content: ''; position: absolute; left: 8px; top: 10px; bottom: 10px; width: 2px; background: var(--panel-border); }
-        .timeline-item { position: relative; padding-left: 40px; margin-bottom: 40px; }
+        /* "The Art of Becoming" Section (Timeline) */
+        .timeline { 
+            text-align: left; 
+            position: relative; 
+            width: 100%; 
+            max-width: 500px; 
+        }
+        .timeline::before { 
+            content: ''; 
+            position: absolute; 
+            left: 8px; 
+            top: 10px; 
+            bottom: 10px; 
+            width: 2px; 
+            background: var(--panel-border); 
+        }
+        .timeline-item { 
+            position: relative; 
+            padding-left: 40px; 
+            margin-bottom: 40px; 
+        }
         .timeline-item:last-child { margin-bottom: 0; }
-        .timeline-item::before { content: ''; position: absolute; left: 0px; top: 5px; width: 18px; height: 18px; border-radius: 50%; background: var(--accent-alien-green); }
-        .timeline-item h3 { font-size: 1.5rem; color: var(--text-cold-white); margin: 0 0 5px 0; }
+        .timeline-item::before { 
+            content: ''; 
+            position: absolute; 
+            left: 0px; 
+            top: 5px; 
+            width: 18px; 
+            height: 18px; 
+            border-radius: 50%; 
+            background: var(--accent-alien-green); 
+        }
+        .timeline-item h3 { 
+            font-size: 1.5rem; 
+            color: var(--text-cold-white); 
+            margin: 0 0 5px 0; 
+        }
+
 
         /* Skills and Projects Grids */
-        #skills-grid, #project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; width: 100%; max-width: 1600px; }
+        #skills-grid, #project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(20px, 4vw, 40px); width: 100%; max-width: 1600px; }
         
-        .skill-category { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 12px; padding: 30px; backdrop-filter: blur(10px); text-align: left; }
-        .skill-category h3 { color: var(--accent-alien-green); font-size: 1.5rem; margin: 0 0 15px 0; }
+        .skill-category { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 12px; padding: clamp(20px, 4vw, 30px); backdrop-filter: blur(10px); text-align: left; }
+        .skill-category h3 { color: var(--accent-alien-green); font-size: clamp(1.2rem, 3vw, 1.5rem); margin: 0 0 15px 0; }
         .skill-category ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
-        .skill-category li { background: rgba(100, 244, 172, 0.1); padding: 5px 12px; border-radius: 15px; font-size: 0.9rem; }
+        .skill-category li { background: rgba(100, 244, 172, 0.1); padding: 5px 12px; border-radius: 15px; font-size: clamp(0.8rem, 2vw, 0.9rem); }
+        body.gold-theme .skill-category li { background: rgba(251, 191, 36, 0.1); }
 
-        .project-card { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 12px; padding: 30px; text-align: left; backdrop-filter: blur(10px); cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .project-card { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 12px; padding: clamp(20px, 4vw, 30px); text-align: left; backdrop-filter: blur(10px); cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .project-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-        .project-card h3 { font-size: 1.8rem; color: var(--text-cold-white); margin: 0 0 10px 0; }
-        .project-card .category { color: var(--accent-alien-green); font-weight: bold; margin-bottom: 15px; display: block; }
+        .project-card h3 { font-size: clamp(1.4rem, 4vw, 1.8rem); color: var(--text-cold-white); margin: 0 0 10px 0; }
+        .project-card .category { color: var(--accent-alien-green); font-weight: bold; margin-bottom: 15px; display: block; font-size: clamp(0.8rem, 2vw, 0.9rem); }
 
-        /* Floating UI Controls */
-        #ui-controls-container { position: fixed; bottom: 30px; right: 30px; z-index: 100; }
-        .ui-button { background: var(--panel-bg); border: 1px solid var(--panel-border); color: var(--accent-alien-green); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(5px); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
-        .ui-button:hover { background-color: rgba(100, 244, 172, 0.2); }
-        
-        #main-toggle-button { position: relative; z-index: 101; }
-        #main-toggle-button svg { transition: transform 0.4s ease; }
-        #ui-controls-container.open #main-toggle-button svg { transform: rotate(135deg); }
-
-        .control-button { position: absolute; bottom: 0; right: 0; opacity: 0; transform: translate(0, 0) scale(0.5); pointer-events: none; }
-        #ui-controls-container.open .control-button { opacity: 1; pointer-events: all; }
-        #ui-controls-container.open #audio-toggle { transform: translateY(-80px); }
-        #ui-controls-container.open #font-toggle { transform: translateY(-160px); }
-        #ui-controls-container.open #lab-button { transform: translateY(-240px); }
-        #ui-controls-container.open #lang-toggle { transform: translateY(-320px); }
         
         /* 3D Project Viewer Overlay Styles */
         #project-viewer-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(11, 15, 26, 0.8); backdrop-filter: blur(20px); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
@@ -192,14 +337,17 @@
         #project-viewer-overlay .close-button { position: absolute; top: 30px; right: 30px; cursor: pointer; color: var(--accent-alien-green); font-size: 2rem; z-index: 260; }
         #project-viewer-ui { position: absolute; bottom: 5vh; left: 5vw; max-width: 450px; color: white; z-index: 250; text-align: left; opacity: 0; transform: translateY(20px); transition: opacity 0.5s 0.5s ease, transform 0.5s 0.5s ease; }
         #project-viewer-overlay.visible #project-viewer-ui { opacity: 1; transform: translateY(0); }
-        #project-viewer-ui h2 { font-size: clamp(2rem, 4vw, 3rem); color: var(--text-cold-white); }
+        #project-viewer-ui h2 { font-size: clamp(2rem, 5vw, 3rem); color: var(--text-cold-white); }
         #project-viewer-ui .category { color: var(--accent-alien-green); }
-        #project-viewer-ui .tech-stack { font-family: 'Sora', monospace; font-size: 0.9rem; color: var(--accent-alien-green); margin-top: 20px; word-spacing: 1rem; }
+        #project-viewer-ui .tech-stack { font-family: 'Sora', monospace; font-size: clamp(0.8rem, 2vw, 0.9rem); color: var(--accent-alien-green); margin-top: 20px; word-spacing: 1rem; }
 
         /* Sandbox Section Styles */
-        #sandbox-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; max-width: 1400px; }
+        #sandbox-container { display: grid; grid-template-columns: 1fr; gap: 20px; width: 100%; max-width: 1400px; }
+        @media (min-width: 768px) {
+            #sandbox-container { grid-template-columns: 1fr 1fr; }
+        }
         #sandbox-editor { background: #011627; color: #d6deeb; border: 1px solid var(--panel-border); border-radius: 8px; font-family: 'Sora', monospace; font-size: 1rem; height: 400px; resize: none; }
-        #sandbox-canvas { border: 1px solid var(--panel-border); border-radius: 8px; }
+        #sandbox-canvas { border: 1px solid var(--panel-border); border-radius: 8px; min-height: 300px;}
         
         /* Generic Modal Styles (for Lab) */
         .modal {
@@ -230,7 +378,7 @@
             position: relative;
         }
         .modal.visible .modal-content { transform: scale(1); }
-        .modal-body { padding: 40px 50px; }
+        .modal-body { padding: clamp(20px, 5vw, 40px) clamp(25px, 6vw, 50px); }
         .modal .close-button {
             position: absolute;
             top: 20px; right: 20px;
@@ -238,8 +386,8 @@
             color: var(--accent-alien-green);
             font-size: 1.5rem;
         }
-        .modal h2 { font-size: 3rem; margin-bottom: 20px; color: var(--text-cold-white); }
-        .modal p { font-size: 1.1rem; }
+        .modal h2 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 20px; color: var(--text-cold-white); }
+        .modal p { font-size: clamp(1rem, 2.5vw, 1.1rem); }
 
         /* Form Styling */
         .form-group { margin-bottom: 20px; text-align: left; }
@@ -323,7 +471,7 @@
         #quote-text::after {
             content: '(Click to return)';
             display: block;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
             font-family: 'Sora', sans-serif;
             font-style: normal;
             margin-top: 20px;
@@ -332,8 +480,28 @@
         }
     </style>
 </head>
-<body>
-    <div id="initials">AM</div>
+<body class="overflow-x-hidden">
+    <!-- Header Navigation -->
+    <header id="header">
+        <div style="max-width: 1280px; margin-left: auto; margin-right: auto; padding: 0 1.5rem; height: 80px; display: flex; justify-content: space-between; align-items: center;">
+            <div id="initials-container">
+                <div id="initials">AM</div>
+                <ul id="initials-dropdown">
+                    <li id="lang-toggle" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> <span data-lang-key="toggleLang">Switch Language</span></li>
+                    <li id="color-toggle" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> <span data-lang-key="toggleTheme">Toggle Theme</span></li>
+                    <li id="lab-button" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> <span data-lang-key="labTitle">Control Room</span></li>
+                    <li id="audio-toggle" class="dropdown-item"><svg id="icon-muted" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg><svg id="icon-playing" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> <span data-lang-key="toggleAudio">Toggle Audio</span></li>
+                </ul>
+            </div>
+            <nav style="display: flex; align-items: center; gap: clamp(1rem, 3vw, 2rem);">
+                <a href="#about" class="nav-link" data-lang-key="navAbout">The Art of Becoming</a>
+                <a href="#projects" class="nav-link" data-lang-key="navProjects">The Feature</a>
+                <a href="#sandbox" class="nav-link" data-lang-key="navSandbox">The Playground</a>
+                <a href="#contact" class="nav-link" data-lang-key="navContact">The Outro</a>
+            </nav>
+        </div>
+    </header>
+    
     <div id="entry-overlay"><div class="entry-text" data-lang-key="entryText">Click to Enter the Archives</div></div>
     <canvas id="three-canvas"></canvas>
     
@@ -346,17 +514,17 @@
         </section>
 
         <section id="about" class="scroll-section">
-             <div class="section-header">
+            <div class="section-header">
                  <h2 class="section-title" data-lang-key="aboutTitle">The Art of Becoming</h2>
                  <p data-lang-key="aboutSubtitle">My journey in computer science isn't a straight line, but a series of thresholds...</p>
-             </div>
-            <div class="timeline">
+            </div>
+           <div class="timeline">
                 <div class="timeline-item"><h3 data-lang-key="timeline1Title">Year 1: The Spark</h3><p data-lang-key="timeline1Desc">Wrote my first "Hello, World." It wasn't about the output; it was the realization that I could speak a machine's language. A new universe opened.</p></div>
                 <div class="timeline-item"><h3 data-lang-key="timeline2Title">Year 2: Architecting Failure</h3><p data-lang-key="timeline2Desc">A passion project collapsed under its own complexity. It taught me that ego is a poor architect and that listening to the silence between the code is crucial.</p></div>
                 <div class="timeline-item"><h3 data-lang-key="timeline3Title">Year 3: Finding Rhythm</h3><p data-lang-key="timeline3Desc">Components, state, and APIs stopped being just rules. They became a composition. I learned to find the cadence that makes an interface feel alive and intuitive.</p></div>
                 <div class="timeline-item"><h3 data-lang-key="timeline4Title">Year 4: The Intelligent Layer</h3><p data-lang-key="timeline4Desc">Moved beyond interfaces to infuse them with intelligence. Explored how data models and machine learning could create experiences that anticipate, adapt, and assist.</p></div>
-            </div>
-        </section>
+           </div>
+       </section>
         
         <section id="skills" class="scroll-section">
             <div class="section-header"><h2 class="section-title" data-lang-key="skillsTitle">Core Competencies</h2><p data-lang-key="skillsSubtitle">My toolkit is a blend of analytical and creative technologies...</p></div>
@@ -405,14 +573,6 @@
     <div id="quote-overlay">
         <p id="quote-text">To appreciate the sun, you gotta know what rain is.</p>
     </div>
-
-    <div id="ui-controls-container">
-        <div id="font-toggle" class="ui-button control-button" title="Toggle Font Style"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h3M20 10v3M14 20h3v-3M4 14v3M10 4h3v16h-3M17 10h3v10h-3"/></svg></div>
-        <div id="lab-button" class="ui-button control-button" title="Control Room"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></div>
-        <div id="audio-toggle" class="ui-button control-button" title="Toggle Audio"><svg id="icon-muted" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg><svg id="icon-playing" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg></div>
-        <div id="lang-toggle" class="ui-button control-button" title="Switch Language"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
-        <div id="main-toggle-button" class="ui-button"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></div>
-    </div>
     
     <audio id="ambient-audio" loop>
         <source src="./promisedconsort.mp3" type="audio/mpeg">
@@ -432,8 +592,98 @@
     <script type="module">
         // --- DATA ---
         const langData = { 
-            en: { entryText: "Click to Enter the Archives", heroTitle1: "Code with Cadence.", heroTitle2: "Design with Soul.", heroSubtitle: "I'm Alvin Murithi, a computer scientist crafting systems where data-driven logic meets human-centered design.", scrollIndicator: "Scroll to explore the archives", aboutTitle: "The Art of Becoming", aboutSubtitle: "My journey in computer science isn't a straight line, but a series of thresholds...", timeline1Title: "Year 1: The Spark", timeline1Desc: 'Wrote my first "Hello, World." It wasn\'t about the output; it was the realization that I could speak a machine\'s language. A new universe opened.', timeline2Title: "Year 2: Architecting Failure", timeline2Desc: "A passion project collapsed under its own complexity. It taught me that ego is a poor architect and that listening to the silence between the code is crucial.", timeline3Title: "Year 3: Finding Rhythm", timeline3Desc: "Components, state, and APIs stopped being just rules. They became a composition. I learned to find the cadence that makes an interface feel alive and intuitive.", timeline4Title: "Year 4: The Intelligent Layer", timeline4Desc: "Moved beyond interfaces to infuse them with intelligence. Explored how data models and machine learning could create experiences that anticipate, adapt, and assist.", skillsTitle: "Core Competencies", skillsSubtitle: "My toolkit is a blend of analytical and creative technologies...", skillsCat1: "Machine Learning & AI", skillsCat2: "Data Science & Analysis", skillsCat3: "Full-Stack Development", skillsCat4: "Design & Prototyping", projectsTitle: "Project Showcase", sandboxTitle: "The Sandbox", sandboxSubtitle: "A playground for creative code. Feel free to experiment.", runCode: "Run Code", contactTitle: "Contact", contactSubtitle: "Have a project, an idea, or just want to connect? Let's talk.", resumeButton: "Download Resume", labTitle: "Control Room", labSubtitle: "Add a new project to the archives. This is a demonstration of the UI; functionality is disabled in this local version.", formTitle: "Project Title", formCategory: "Category", formDescription: "Short Description", formDetails: "Detailed Information (Markdown supported)", formTech: "Tech Stack (comma-separated)", formSubmit: "Add to Archives", footerRights: "© 2025 Alvin Murithi. All Rights Reserved." }, 
-            es: { entryText: "Clic para Entrar a los Archivos", heroTitle1: "Código con Cadencia.", heroTitle2: "Diseño con Alma.", heroSubtitle: "Soy Alvin Murithi, un científico de la computación que crea sistemas donde la lógica basada en datos se une con el diseño centrado en el ser humano.", scrollIndicator: "Desliza para explorar los archivos", aboutTitle: "El Arte de Convertirse", aboutSubtitle: "Mi viaje en la informática no es una línea recta, sino una serie de umbrales...", timeline1Title: "Año 1: La Chispa", timeline1Desc: 'Escribí mi primer "Hola, Mundo". No se trataba del resultado; fue la comprensión de que podía hablar el lenguaje de una máquina. Un nuevo universo se abrió.', timeline2Title: "Año 2: Arquitectando el Fracaso", timeline2Desc: "Un proyecto apasionante colapsó bajo su propia complejidad. Me enseñó que el ego es un mal arquitecto y que es crucial escuchar el silencio entre el código.", timeline3Title: "Año 3: Encontrando el Ritmo", timeline3Desc: "Los componentes, el estado y las API dejaron de ser solo reglas. Se convirtieron en una composición. Aprendí a encontrar la cadencia que hace que una interfaz se sienta viva e intuitiva.", timeline4Title: "Año 4: La Capa Inteligente", timeline4Desc: "Fui más allá de las interfaces para infundirles inteligencia. Explpré cómo los modelos de datos y el aprendizaje automático podían crear experiencias que anticipan, se adaptan y asisten.", skillsTitle: "Competencias Clave", skillsSubtitle: "Mi conjunto de herramientas es una mezcla de tecnologías analíticas y creativas...", skillsCat1: "Aprendizaje Automático e IA", skillsCat2: "Ciencia y Análisis de Datos", skillsCat3: "Desarrollo Full-Stack", skillsCat4: "Diseño y Prototipado", projectsTitle: "Galería de Proyectos", sandboxTitle: "El Laboratorio", sandboxSubtitle: "Un patio de recreo para el código creativo. Siéntete libre de experimentar.", runCode: "Ejecutar Código", contactTitle: "Contacto", contactSubtitle: "¿Tienes un proyecto, una idea o simplemente quieres conectar? Hablemos.", resumeButton: "Descargar CV", labTitle: "Sala de Control", labSubtitle: "Añade un nuevo proyecto a los archivos. Esto es una demostración de la interfaz; la funcionalidad está desactivada en esta versión local.", formTitle: "Título del Proyecto", formCategory: "Categoría", formDescription: "Descripción Corta", formDetails: "Información Detallada (Markdown soportado)", formTech: "Tecnologías (separadas por comas)", formSubmit: "Añadir a los Archivos", footerRights: "© 2025 Alvin Murithi. Todos los derechos reservados." } 
+            en: { 
+                entryText: "Click to Enter the Archives", 
+                heroTitle1: "Code with Cadence.", 
+                heroTitle2: "Design with Soul.", 
+                heroSubtitle: "I'm Alvin Murithi, a computer scientist crafting systems where data-driven logic meets human-centered design.", 
+                scrollIndicator: "Scroll to explore the archives", 
+                aboutTitle: "The Art of Becoming", 
+                aboutSubtitle: "My journey in computer science isn't a straight line, but a series of thresholds...",
+                timeline1Title: "Year 1: The Spark", 
+                timeline1Desc: 'Wrote my first "Hello, World." It wasn\'t about the output; it was the realization that I could speak a machine\'s language. A new universe opened.', 
+                timeline2Title: "Year 2: Architecting Failure", 
+                timeline2Desc: "A passion project collapsed under its own complexity. It taught me that ego is a poor architect and that listening to the silence between the code is crucial.", 
+                timeline3Title: "Year 3: Finding Rhythm", 
+                timeline3Desc: "Components, state, and APIs stopped being just rules. They became a composition. I learned to find the cadence that makes an interface feel alive and intuitive.", 
+                timeline4Title: "Year 4: The Intelligent Layer", 
+                timeline4Desc: "Moved beyond interfaces to infuse them with intelligence. Explored how data models and machine learning could create experiences that anticipate, adapt, and assist.",
+                skillsTitle: "Core Competencies", 
+                skillsSubtitle: "My toolkit is a blend of analytical and creative technologies...", 
+                skillsCat1: "Machine Learning & AI", 
+                skillsCat2: "Data Science & Analysis", 
+                skillsCat3: "Full-Stack Development", 
+                skillsCat4: "Design & Prototyping", 
+                projectsTitle: "Project Showcase", 
+                sandboxTitle: "The Sandbox", 
+                sandboxSubtitle: "A playground for creative code. Feel free to experiment.", 
+                runCode: "Run Code", 
+                contactTitle: "Contact", 
+                contactSubtitle: "Have a project, an idea, or just want to connect? Let's talk.", 
+                resumeButton: "Download Resume", 
+                labTitle: "Control Room", 
+                labSubtitle: "Add a new project to the archives. This is a demonstration of the UI; functionality is disabled in this local version.", 
+                formTitle: "Project Title", 
+                formCategory: "Category", 
+                formDescription: "Short Description", 
+                formDetails: "Detailed Information (Markdown supported)", 
+                formTech: "Tech Stack (comma-separated)", 
+                formSubmit: "Add to Archives", 
+                footerRights: "© 2025 Alvin Murithi. All Rights Reserved.", 
+                navAbout: "The Art of Becoming", 
+                navProjects: "The Feature Presentation", 
+                navSandbox: "The Playground", 
+                navContact: "The Outro", 
+                toggleLang: "Switch Language", 
+                toggleTheme: "Toggle Theme", 
+                toggleAudio: "Toggle Audio" 
+            }, 
+            es: { 
+                entryText: "Clic para Entrar a los Archivos", 
+                heroTitle1: "Código con Cadencia.", 
+                heroTitle2: "Diseño con Alma.", 
+                heroSubtitle: "Soy Alvin Murithi, un científico de la computación que crea sistemas donde la lógica basada en datos se une con el diseño centrado en el ser humano.", 
+                scrollIndicator: "Desliza para explorar los archivos", 
+                aboutTitle: "El Arte de Convertirse", 
+                aboutSubtitle: "Mi viaje en la informática no es una línea recta, sino una serie de umbrales...",
+                timeline1Title: "Año 1: La Chispa", 
+                timeline1Desc: 'Escribí mi primer "Hola, Mundo". No se trataba del resultado; fue la comprensión de que podía hablar el lenguaje de una máquina. Un nuevo universo se abrió.', 
+                timeline2Title: "Año 2: Arquitectando el Fracaso", 
+                timeline2Desc: "Un proyecto apasionante colapsó bajo su propia complejidad. Me enseñó que el ego es un mal arquitecto y que es crucial escuchar el silencio entre el código.", 
+                timeline3Title: "Año 3: Encontrando el Ritmo", 
+                timeline3Desc: "Los componentes, el estado y las API dejaron de ser solo reglas. Se convirtieron en una composición. Aprendí a encontrar la cadencia que hace que una interfaz se sienta viva e intuitiva.", 
+                timeline4Title: "Año 4: La Capa Inteligente", 
+                timeline4Desc: "Fui más allá de las interfaces para infundirles inteligencia. Exploré cómo los modelos de datos y el aprendizaje automático podían crear experiencias que anticipan, se adaptan y asisten.",
+                skillsTitle: "Competencias Clave", 
+                skillsSubtitle: "Mi conjunto de herramientas es una mezcla de tecnologías analíticas y creativas...", 
+                skillsCat1: "Aprendizaje Automático e IA", 
+                skillsCat2: "Ciencia y Análisis de Datos", 
+                skillsCat3: "Desarrollo Full-Stack", 
+                skillsCat4: "Diseño y Prototipado", 
+                projectsTitle: "Galería de Proyectos", 
+                sandboxTitle: "El Laboratorio", 
+                sandboxSubtitle: "Un patio de recreo para el código creativo. Siéntete libre de experimentar.", 
+                runCode: "Ejecutar Código", 
+                contactTitle: "Contacto", 
+                contactSubtitle: "¿Tienes un proyecto, una idea o simplemente quieres conectar? Hablemos.", 
+                resumeButton: "Descargar CV", 
+                labTitle: "Sala de Control", 
+                labSubtitle: "Añade un nuevo proyecto a los archivos. Esto es una demostración de la interfaz; la funcionalidad está desactivada en esta versión local.", 
+                formTitle: "Título del Proyecto", 
+                formCategory: "Categoría", 
+                formDescription: "Descripción Corta", 
+                formDetails: "Información Detallada (Markdown soportado)", 
+                formTech: "Tecnologías (separadas por comas)", 
+                formSubmit: "Añadir a los Archivos", 
+                footerRights: "© 2025 Alvin Murithi. Todos los derechos reservados.", 
+                navAbout: "El Arte de Convertirse", 
+                navProjects: "La Presentación Principal", 
+                navSandbox: "El Laboratorio", 
+                navContact: "El Cierre", 
+                toggleLang: "Cambiar Idioma", 
+                toggleTheme: "Cambiar Tema", 
+                toggleAudio: "Alternar Audio" 
+            } 
         };
         const localProjects = [ 
             { 
@@ -506,18 +756,43 @@
         renderProjects();
         
         // --- UI CONTROLS EVENT LISTENERS ---
-        const uiContainer = document.getElementById('ui-controls-container');
-        document.getElementById('main-toggle-button').addEventListener('click', () => uiContainer.classList.toggle('open'));
+        const initialsDropdown = document.getElementById('initials-dropdown');
+        document.getElementById('initials').addEventListener('click', () => {
+            initialsDropdown.classList.toggle('open');
+        });
+
+        document.addEventListener('click', (e) => {
+            const container = document.getElementById('initials-container');
+            if (!container.contains(e.target)) {
+                initialsDropdown.classList.remove('open');
+            }
+        });
 
         const labModal = document.getElementById('lab-modal');
-        document.getElementById('lab-button').addEventListener('click', () => labModal.classList.add('visible'));
-        document.querySelector('#lab-modal .close-button').addEventListener('click', () => labModal.classList.remove('visible'));
-        document.getElementById('add-project-form').addEventListener('submit', (e) => { e.preventDefault(); document.getElementById('form-feedback').textContent = 'Project adding is disabled.'; });
+        const labButton = document.getElementById('lab-button');
+        if(labButton) {
+            labButton.addEventListener('click', () => {
+                const password = prompt('Enter password to access Control Room:');
+                // You can change 'your_password' to whatever you like.
+                if (password === 'cadence') {
+                    labModal.classList.add('visible');
+                } else if(password) {
+                    alert('Incorrect password.');
+                }
+            });
+        }
+        document.querySelector('#lab-modal .close-button')?.addEventListener('click', () => labModal.classList.remove('visible'));
+        document.getElementById('add-project-form')?.addEventListener('submit', (e) => { e.preventDefault(); document.getElementById('form-feedback').textContent = 'Project adding is disabled.'; });
 
         const audio = document.getElementById('ambient-audio');
         const audioToggle = document.getElementById('audio-toggle');
-        const iconMuted = document.getElementById('icon-muted');
-        const iconPlaying = document.getElementById('icon-playing');
+        if (audioToggle) {
+            const iconMuted = document.getElementById('icon-muted');
+            const iconPlaying = document.getElementById('icon-playing');
+            audioToggle.addEventListener('click', () => audio.paused ? audio.play().catch(e=>console.error(e)) : audio.pause());
+            audio.addEventListener('play', () => { iconPlaying.style.display = 'block'; iconMuted.style.display = 'none'; });
+            audio.addEventListener('pause', () => { iconPlaying.style.display = 'none'; iconMuted.style.display = 'block'; });
+        }
         
         document.getElementById('entry-overlay').addEventListener('click', async () => {
             document.getElementById('entry-overlay').classList.add('hidden');
@@ -537,12 +812,8 @@
                 soundsReady = true;
             }
         }, { once: true });
-
-        audioToggle.addEventListener('click', () => audio.paused ? audio.play().catch(e=>console.error(e)) : audio.pause());
-        audio.addEventListener('play', () => { iconPlaying.style.display = 'block'; iconMuted.style.display = 'none'; });
-        audio.addEventListener('pause', () => { iconPlaying.style.display = 'none'; iconMuted.style.display = 'block'; });
         
-        document.getElementById('font-toggle').addEventListener('click', () => document.body.classList.toggle('artistic-font'));
+        document.getElementById('color-toggle').addEventListener('click', () => document.body.classList.toggle('gold-theme'));
         document.getElementById('lang-toggle').addEventListener('click', () => switchLanguage(currentLang === 'en' ? 'es' : 'en'));
 
         // --- SCROLL & PAGE ANIMATIONS ---
@@ -734,7 +1005,7 @@ function animateGreeting(index) {
         
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.globalAlpha = alpha;
-        ctx.fillStyle = '#64F4AC';
+        ctx.fillStyle = document.body.classList.contains('gold-theme') ? '#FBBF24' : '#64F4AC';
         ctx.fillText(greeting.text, canvasCenter.x, canvasCenter.y);
         ctx.globalAlpha = 1.0;
 
@@ -833,8 +1104,10 @@ animateGreeting(0);`;
                 Tone.Transport.stop();
             }
             clearInterval(discoInterval);
-            document.documentElement.style.setProperty('--accent-alien-green', '#64F4AC');
-            document.documentElement.style.setProperty('--heading-synth-purple', '#9C6ADE');
+            // Reset to default or gold theme colors
+            const isGoldTheme = document.body.classList.contains('gold-theme');
+            document.documentElement.style.setProperty('--accent-alien-green', isGoldTheme ? '#FBBF24' : '#64F4AC');
+            document.documentElement.style.setProperty('--heading-synth-purple', isGoldTheme ? '#FBBF24' : '#9C6ADE');
         }
 
         window.addEventListener('click', (event) => {
@@ -855,6 +1128,43 @@ animateGreeting(0);`;
             camera.updateProjectionMatrix(); 
             renderer.setSize(window.innerWidth, window.innerHeight); 
         });
+        
+        const header = document.getElementById('header');
+        // Use Lenis's scroll event for better sync
+        lenis.on('scroll', (e) => {
+             if (e.scroll > 50) {
+                 header.classList.add('scrolled');
+             } else {
+                 header.classList.remove('scrolled');
+             }
+        })
+
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuOpenIcon = document.getElementById('menu-open-icon');
+        const menuCloseIcon = document.getElementById('menu-close-icon');
+
+        // This functionality is no longer needed as the button is removed
+        if(mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', () => {
+                const isHidden = mobileMenu.style.display === 'none' || mobileMenu.style.display === '';
+                mobileMenu.style.display = isHidden ? 'flex' : 'none';
+                menuOpenIcon.style.display = isHidden ? 'none' : 'block';
+                menuCloseIcon.style.display = isHidden ? 'block' : 'none';
+            });
+        }
+
+        if(mobileMenu) {
+            document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.style.display = 'none';
+                    if (menuOpenIcon) menuOpenIcon.style.display = 'block';
+                    if (menuCloseIcon) menuCloseIcon.style.display = 'none';
+                });
+            });
+        }
+
 
         function animate(time) {
             lenis.raf(time);
